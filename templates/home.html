@@ -3,12 +3,23 @@
 {% block content %}
 <div class="container">
     <!-- Hero Section -->
-    <div class="hero-section">
-        <div class="hero-content">
-            <h1 class="hero-title">{{ config.BLOG_TITLE }}</h1>
-            <p class="hero-subtitle">{{ config.BLOG_DESCRIPTION }}</p>
-            <a href="/ai" target="_blank" class="btn-cta">Try AI ✨</a>
-        </div>
+    <section class="hero-section">
+        <h1 class="hero-title">{{ config.BLOG_TITLE }}</h1>
+        <p class="hero-subtitle">{{ config.BLOG_DESCRIPTION }}</p>
+        <a href="/ai" target="_blank" class="btn-ai">Try AI ✨</a>
+    </section>
+    
+    <!-- Layout Selector -->
+    <div class="layout-selector">
+        <a href="/?layout=bento" class="layout-btn {% if request.args.get('layout') == 'bento' or not request.args.get('layout') %}active{% endif %}" title="Bento Grid">
+            <i class="fas fa-th"></i>
+        </a>
+        <a href="/?layout=magazine" class="layout-btn {% if request.args.get('layout') == 'magazine' %}active{% endif %}" title="Magazine">
+            <i class="fas fa-newspaper"></i>
+        </a>
+        <a href="/?layout=minimal" class="layout-btn {% if request.args.get('layout') == 'minimal' %}active{% endif %}" title="Minimal">
+            <i class="fas fa-align-left"></i>
+        </a>
     </div>
     
     <!-- Categories -->
@@ -19,33 +30,13 @@
         {% endfor %}
     </div>
     
-    <!-- Latest Posts Grid -->
+    <!-- Posts Section -->
     <div class="posts-area">
         <h2 class="section-header">Latest Articles</h2>
         
-        {% if recent_posts %}
-        <div class="grid">
-            {% for post in recent_posts %}
-            <a href="{{ url_for('post', slug=post.slug) }}" class="card">
-                <div class="card-img">
-                    {% if post.image_url %}
-                    <img src="{{ post.image_url }}" alt="{{ post.title }}">
-                    {% else %}
-                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600" alt="{{ post.title }}">
-                    {% endif %}
-                    <span class="card-badge">{{ post.category.name if post.category else 'Blog' }}</span>
-                </div>
-                <div class="card-text">
-                    <h3 class="card-heading">{{ post.title }}</h3>
-                    <p class="card-desc">{{ post.content[:80] }}...</p>
-                    <div class="card-info">
-                        <span><i class="far fa-calendar"></i> {{ post.created_at.strftime('%b %d') }}</span>
-                        <span><i class="far fa-clock"></i> 5 min</span>
-                    </div>
-                </div>
-            </a>
-            {% endfor %}
-        </div>
+        {% if posts %}
+            {% set layout = request.args.get('layout', 'bento') %}
+            {% include 'layouts.html' %}
         {% else %}
         <div class="no-posts">
             <h3>No posts yet</h3>
@@ -54,4 +45,38 @@
         {% endif %}
     </div>
 </div>
+
+<style>
+.layout-selector {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    justify-content: center;
+}
+
+.layout-btn {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    color: var(--gray);
+    font-size: 1.1rem;
+    transition: all 0.2s;
+}
+
+.layout-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.layout-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    border-color: transparent;
+    color: white;
+}
+</style>
 {% endblock %}

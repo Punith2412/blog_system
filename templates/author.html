@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}{{ author.username }} - {{ config.BLOG_TITLE }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .author-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 80px 20px; text-align: center; color: white; }
+    .author-avatar { width: 120px; height: 120px; border-radius: 50%; background: white; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 700; color: #667eea; }
+    .author-header h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 12px; }
+    .author-bio { max-width: 600px; margin: 0 auto; opacity: 0.9; }
+    .author-stats { display: flex; justify-content: center; gap: 40px; margin-top: 30px; }
+    .author-stat { text-align: center; }
+    .author-stat-value { font-size: 2rem; font-weight: 700; }
+    .author-stat-label { font-size: 0.9rem; opacity: 0.8; }
+    .author-posts { max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
+    .author-posts h2 { font-family: 'Playfair Display', serif; font-size: 1.75rem; margin-bottom: 30px; }
+    .posts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+    .post-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); transition: transform 0.3s; }
+    .post-card:hover { transform: translateY(-5px); }
+    .post-card-image { height: 200px; background: linear-gradient(135deg, #667eea, #764ba2); }
+    .post-card-image img { width: 100%; height: 100%; object-fit: cover; }
+    .post-card-content { padding: 24px; }
+    .post-card-meta { font-size: 0.8rem; color: #94a3b8; margin-bottom: 12px; }
+    .post-card-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; margin-bottom: 12px; }
+    .post-card-title a { color: #1e293b; transition: color 0.3s; }
+    .post-card-title a:hover { color: #667eea; }
+    @media (max-width: 1024px) { .posts-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { .posts-grid { grid-template-columns: 1fr; } .author-stats { gap: 20px; } }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="author-header">
+    <div class="author-avatar">{{ author.username[0]|upper }}</div>
+    <h1>{{ author.username }}</h1>
+    <p class="author-bio">{{ author.bio or 'Content creator and writer.' }}</p>
+    <div class="author-stats">
+        <div class="author-stat">
+            <div class="author-stat-value">{{ posts|length }}</div>
+            <div class="author-stat-label">Posts</div>
+        </div>
+        <div class="author-stat">
+            <div class="author-stat-value">{{ posts|sum(attribute='views') }}</div>
+            <div class="author-stat-label">Total Views</div>
+        </div>
+    </div>
+</header>
+<div class="author-posts">
+    <h2>Posts by {{ author.username }}</h2>
+    {% if posts %}
+    <div class="posts-grid">
+        {% for post in posts %}
+        <article class="post-card">
+            {% if post.featured_image %}
+            <div class="post-card-image"><img src="{{ post.featured_image }}" alt="{{ post.title }}"></div>
+            {% else %}
+            <div class="post-card-image" style="background: linear-gradient(135deg, #667eea, #764ba2);"></div>
+            {% endif %}
+            <div class="post-card-content">
+                <div class="post-card-meta">
+                    {{ post.created_at.strftime('%b %d, %Y') }} • {{ post.category_name }}
+                </div>
+                <h3 class="post-card-title"><a href="{{ url_for('post', slug=post.slug) }}">{{ post.title }}</a></h3>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="text-align: center; color: #64748b; padding: 40px;">No posts yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

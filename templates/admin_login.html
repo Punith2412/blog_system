@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - {{ config.BLOG_TITLE }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+        
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+        }
+        
+        .login-image {
+            flex: 1;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        .login-image-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+            max-width: 400px;
+        }
+        
+        .login-logo {
+            font-size: 3rem;
+            margin-bottom: 24px;
+        }
+        
+        .login-image h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+        
+        .login-image p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .login-quote {
+            margin-top: 40px;
+            padding: 24px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            font-style: italic;
+        }
+        
+        .login-form-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            background: white;
+        }
+        
+        .login-form-container {
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-form-header {
+            margin-bottom: 40px;
+        }
+        
+        .login-form-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        
+        .login-form-header p {
+            color: #64748b;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #334155;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8fafc;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: #94a3b8;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .login-footer {
+            margin-top: 32px;
+            text-align: center;
+            color: #64748b;
+        }
+        
+        .login-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            text-decoration: none;
+            margin-bottom: 32px;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: #667eea;
+        }
+        
+        @media (max-width: 1024px) {
+            .login-image {
+                display: none;
+            }
+            .login-form-section {
+                flex: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-page">
+        <!-- Left Side - Image/Branding -->
+        <div class="login-image">
+            <div class="login-image-content">
+                <div class="login-logo">✦</div>
+                <h2>Welcome Back</h2>
+                <p>Sign in to access your admin dashboard and manage your blog content.</p>
+                <div class="login-quote">
+                    "The beautiful thing about learning is that nobody can take it away from you."
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Side - Login Form -->
+        <div class="login-form-section">
+            <div class="login-form-container">
+                <a href="{{ url_for('home') }}" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Blog
+                </a>
+                
+                <div class="login-form-header">
+                    <h1>Admin Login</h1>
+                    <p>Enter your credentials to access the dashboard</p>
+                </div>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}" style="margin-bottom: 24px;">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                <form method="POST">
+                    <div class="form-group">
+                        <label class="form-label" for="username">Username</label>
+                        <input type="text" id="username" name="username" class="form-input" 
+                               placeholder="Enter your username" required autofocus>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" id="password" name="password" class="form-input" 
+                               placeholder="Enter your password" required>
+                    </div>
+                    
+                    <button type="submit" class="login-btn">
+                        Sign In
+                    </button>
+                </form>
+                
+                <div class="login-footer">
+                    <p>Forgot your password? <a href="#">Reset here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

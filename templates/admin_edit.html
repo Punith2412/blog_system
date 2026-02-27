@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Edit Post</h2>
+<form method="post">
+    <input name="title" value="{{ post.title }}" required><br>
+    <textarea id="content" name="content">{{ post.content }}</textarea><br>
+    <input name="category" value="{{ post.category }}"><br>
+    <input name="tags" value="{{ post.tags }}"><br>
+    <input name="image" value="{{ post.image }}"><br>
+    <select name="status">
+        <option value="draft" {% if post.status == 'draft' %}selected{% endif %}>Draft</option>
+        <option value="published" {% if post.status == 'published' %}selected{% endif %}>Published</option>
+    </select><br>
+    <select name="type">
+        <option value="article" {% if post.type == 'article' %}selected{% endif %}>Article</option>
+        <option value="image" {% if post.type == 'image' %}selected{% endif %}>Image</option>
+        <option value="video" {% if post.type == 'video' %}selected{% endif %}>Video</option>
+    </select><br>
+    <button type="submit">Update Post</button>
+</form>
+<script src="https://cdn.tiny.cloud/1/21ua8v8ltagp8l98v4fgybgvlkve1680ci9uvvkw4dw5gnjj/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
+<script>
+  tinymce.init({
+    selector: 'textarea',
+    plugins: [
+      'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+      'checklist', 'mediaembed', 'casechange', 'formatpainter', 'pageembed', 'a11ychecker', 'tinymcespellchecker', 'permanentpen', 'powerpaste', 'advtable', 'advcode', 'advtemplate', 'ai', 'uploadcare', 'mentions', 'tinycomments', 'tableofcontents', 'footnotes', 'mergetags', 'autocorrect', 'typography', 'inlinecss', 'markdown','importword', 'exportword', 'exportpdf'
+    ],
+    toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography uploadcare | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+    tinycomments_mode: 'embedded',
+    tinycomments_author: 'Author name',
+    mergetags_list: [
+      { value: 'First.Name', title: 'First Name' },
+      { value: 'Email', title: 'Email' },
+    ],
+    ai_request: (request, respondWith) => respondWith.string(() => Promise.reject('See docs to implement AI Assistant')),
+    uploadcare_public_key: 'b4e36106b07e0d9b045b',
+  });
+</script>
+{% endblock %}

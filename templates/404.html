@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Page Not Found</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .error-container {
+            text-align: center;
+            padding: 40px;
+            max-width: 600px;
+        }
+        
+        .error-code {
+            font-family: 'Playfair Display', serif;
+            font-size: 8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 16px;
+        }
+        
+        .error-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+        
+        .error-message {
+            font-size: 1.1rem;
+            color: #64748b;
+            margin-bottom: 32px;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        /* Popular Posts Section */
+        .popular-section {
+            margin-top: 48px;
+            padding-top: 32px;
+            border-top: 1px solid #e2e8f        
+        .popular0;
+        }
+-title {
+            font-size: 1rem;
+            color: #64748b;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .popular-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .popular-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .popular-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .popular-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+        
+        .popular-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .popular-info span {
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <h1 class="error-title">Oops! Page Not Found</h1>
+        <p class="error-message">
+            The page you're looking for doesn't exist or has been moved.
+            Don't worry, you can always go back to home or check out our popular posts.
+        </p>
+        
+        <a href="{{ url_for('home') }}" class="btn">
+            <i class="fas fa-home"></i> Back to Home
+        </a>
+        
+        {% if popular_posts %}
+        <div class="popular-section">
+            <div class="popular-title">Popular Reads</div>
+            <div class="popular-list">
+                {% for post in popular_posts[:3] %}
+                <a href="{{ url_for('post', slug=post.slug) }}" class="popular-item">
+                    <span class="popular-number">{{ loop.index }}</span>
+                    <div class="popular-info">
+                        <h4>{{ post.title }}</h4>
+                        <span>{{ post.views }} views</span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

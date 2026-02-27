@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-sidebar">
+        <h2>MyBlog Admin</h2>
+        <nav class="admin-nav">
+            <a href="{{ url_for('admin_dashboard') }}">📊 Dashboard</a>
+            <a href="{{ url_for('create_post') }}" class="active">✏️ New Post</a>
+            <a href="{{ url_for('home') }}">👁️ View Site</a>
+            <a href="{{ url_for('logout') }}">🚪 Logout</a>
+        </nav>
+    </div>
+    <div class="admin-content">
+        <div class="admin-header">
+            <h1>Create New Post</h1>
+        </div>
+        
+        <div class="editor-container">
+            <form method="POST">
+                <div class="form-group">
+                    <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Title</label>
+                    <input type="text" name="title" class="form-control" placeholder="Enter post title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Subtitle (Optional)</label>
+                    <input type="text" name="subtitle" class="form-control" placeholder="Enter subtitle">
+                </div>
+                
+                <div class="form-group">
+                    <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">Content</label>
+                    <textarea name="content" class="form-control" placeholder="Write your post content here..." required style="min-height: 300px;"></textarea>
+                </div>
+                
+                <div class="action-buttons">
+                    <button type="submit" name="action" value="publish" class="btn btn-dark">Publish</button>
+                    <button type="submit" name="action" value="save_draft" class="btn btn-outline">Save as Draft</button>
+                    <a href="{{ url_for('admin_dashboard') }}" class="btn" style="background: #eee; color: #333;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ config.BLOG_TITLE }}{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('home') }}" class="nav-logo">
+                <span class="logo-icon">✦</span>
+                <span class="logo-text">{{ config.BLOG_TITLE }}</span>
+            </a>
+            
+            <div class="nav-search">
+                <form action="{{ url_for('search') }}" method="GET" class="search-form">
+                    <input type="text" name="q" placeholder="Search posts..." class="search-input">
+                    <button type="submit" class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
+            
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+                <a href="{{ url_for('about') }}" class="nav-link">About</a>
+                <a href="{{ url_for('contact') }}" class="nav-link">Contact</a>
+                {% if session.get('user_id') %}
+                    <a href="{{ url_for('admin_panel') }}" class="nav-link admin-link">
+                        <i class="fas fa-cog"></i> Dashboard
+                    </a>
+                    <a href="{{ url_for('admin_logout') }}" class="nav-link">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('admin_login') }}" class="nav-link admin-link">
+                        <i class="fas fa-user"></i> Login
+                    </a>
+                {% endif %}
+                <a href="/ai" target="_blank" class="nav-link ai-link">Try AI ✨</a>
+            </div>
+            
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                            <button class="alert-close">&times;</button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3 class="footer-title">
+                        <span class="logo-icon">✦</span> {{ config.BLOG_TITLE }}
+                    </h3>
+                    <p class="footer-desc">{{ config.BLOG_DESCRIPTION }}</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">Categories</h4>
+                    <ul class="footer-links">
+                        {% for category in categories[:5] %}
+                            <li><a href="{{ url_for('category', slug=category.slug) }}">{{ category.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="{{ url_for('about') }}">About Us</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                        <li><a href="{{ url_for('newsletter_unsubscribe') }}">Newsletter</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-heading">Newsletter</h4>
+                    <p class="footer-desc">Subscribe to get the latest posts delivered to your inbox.</p>
+                    <form action="{{ url_for('newsletter_subscribe') }}" method="POST" class="newsletter-form">
+                        <input type="email" name="email" placeholder="Your email" required class="newsletter-input">
+                        <button type="submit" class="newsletter-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; {{ now.year if now else 2024 }} {{ config.BLOG_TITLE }}. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="admin-container">
+    <div class="admin-sidebar">
+        <h2>MyBlog Admin</h2>
+        <nav class="admin-nav">
+            <a href="{{ url_for('admin_dashboard') }}">📊 Dashboard</a>
+            <a href="{{ url_for('create_post') }}">✏️ New Post</a>
+            <a href="{{ url_for('drafts') }}" class="active">📝 Drafts</a>
+            <a href="{{ url_for('home') }}">👁️ View Site</a>
+            <a href="{{ url_for('logout') }}">🚪 Logout</a>
+        </nav>
+    </div>
+    <div class="admin-content">
+        <div class="admin-header">
+            <h1>Your Drafts</h1>
+            <a href="{{ url_for('create_post') }}" class="btn btn-dark">+ New Post</a>
+        </div>
+        
+        <div class="post-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts %}
+                    <tr>
+                        <td>
+                            <span style="font-weight: 600;">{{ post.title }}</span>
+                        </td>
+                        <td>
+                            <span class="badge badge-draft">Draft</span>
+                        </td>
+                        <td>{{ post.date_posted.strftime('%Y-%m-%d') }}</td>
+                        <td>
+                            <a href="{{ url_for('delete_post', post_id=post.id) }}" 
+                               style="color: #dc3545;"
+                               onclick="return confirm('Are you sure?')">
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 2rem; color: #888;">
+                            No drafts yet. Save a post as draft to see it here!
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

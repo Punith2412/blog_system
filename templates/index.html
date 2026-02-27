@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="jumbotron bg-primary text-white p-5 mb-4">
+    <h1 class="display-4">Welcome to My Awesome Blog</h1>
+    <p class="lead">Discover insights on technology, lifestyle, and more. Built with Flask and SQLite, this blog features modern web development practices.</p>
+    <p>Explore our latest posts, search for topics, leave comments, and subscribe for updates. Features include dark mode, rich text editing, analytics, and more!</p>
+</div>
+
+<h2>Latest Posts</h2>
+<div class="row">
+    {% for post in posts %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            {% if post.type == 'image' %}
+            <img src="{{ post.image }}" class="card-img-top" alt="Post Image">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }} ({{ post.type }})</h5>
+                <div class="card-text">{{ post.content[:200] | safe }}...</div>
+                <p class="text-muted">Category: {{ post.category }} | {{ post.created_at }}</p>
+                <a href="/post/{{ post.slug }}" class="btn btn-primary">Read More</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{{ pagination.links }}
+
+<div class="mt-5">
+    <h3>AI Assistant</h3>
+    <div id="chat-container">
+        <div id="chat-messages"></div>
+        <input id="chat-input" type="text" placeholder="Ask me anything..." class="form-control">
+        <button id="chat-send" class="btn btn-secondary mt-2">Send</button>
+    </div>
+</div>
+
+<div class="mt-5">
+    <h3>Subscribe to newsletter</h3>
+    <form action="/subscribe" method="post" class="d-flex">
+        <input name="email" type="email" placeholder="Enter your email" class="form-control me-2" required>
+        <button type="submit" class="btn btn-success">Subscribe</button>
+    </form>
+</div>
+
+<script>
+document.getElementById('chat-send').addEventListener('click', function() {
+    const input = document.getElementById('chat-input');
+    const messages = document.getElementById('chat-messages');
+    const message = input.value;
+    if (message) {
+        messages.innerHTML += '<p><strong>You:</strong> ' + message + '</p>';
+        fetch('/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: message })
+        })
+        .then(response => response.json())
+        .then(data => {
+            messages.innerHTML += '<p><strong>AI:</strong> ' + data.response + '</p>';
+        });
+        input.value = '';
+    }
+});
+</script>
+{% endblock %}

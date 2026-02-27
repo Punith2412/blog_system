@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - {{ config.BLOG_TITLE }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-hero { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); padding: 60px 20px; text-align: center; color: white; }
+    .contact-hero h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 12px; }
+    .contact-hero p { opacity: 0.9; }
+    .contact-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1100px; margin: 0 auto; padding: 60px 20px; }
+    .contact-info h2 { font-family: 'Playfair Display', serif; font-size: 1.75rem; margin-bottom: 20px; }
+    .contact-info p { color: #64748b; line-height: 1.7; margin-bottom: 30px; }
+    .contact-details { list-style: none; }
+    .contact-details li { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .contact-icon { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #667eea20, #764ba220); display: flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+    .contact-text h4 { font-size: 0.9rem; color: #94a3b8; margin-bottom: 4px; }
+    .contact-text span { font-weight: 500; }
+    .contact-form-card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    .contact-form-card h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 24px; }
+    .form-group { margin-bottom: 20px; }
+    .form-label { display: block; margin-bottom: 8px; font-weight: 500; }
+    .form-input, .form-textarea { width: 100%; padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 1rem; transition: border-color 0.3s; }
+    .form-input:focus, .form-textarea:focus { outline: none; border-color: #667eea; }
+    .form-textarea { min-height: 150px; resize: vertical; }
+    .btn { padding: 14px 28px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(102,126,234,0.4); }
+    @media (max-width: 768px) { .contact-wrapper { grid-template-columns: 1fr; } }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="contact-hero">
+    <h1>Get in Touch</h1>
+    <p>Have a question or want to collaborate? We'd love to hear from you.</p>
+</div>
+<div class="contact-wrapper">
+    <div class="contact-info">
+        <h2>Let's Start a Conversation</h2>
+        <p>Whether you have a question about our content, want to collaborate on a project, or just want to say hello, we're here to help. Fill out the form and we'll get back to you as soon as possible.</p>
+        <ul class="contact-details">
+            <li>
+                <div class="contact-icon">📧</div>
+                <div class="contact-text">
+                    <h4>Email</h4>
+                    <span>contact@blog.com</span>
+                </div>
+            </li>
+            <li>
+                <div class="contact-icon">📍</div>
+                <div class="contact-text">
+                    <h4>Location</h4>
+                    <span>New York, NY</span>
+                </div>
+            </li>
+            <li>
+                <div class="contact-icon">⏰</div>
+                <div class="contact-text">
+                    <h4>Response Time</h4>
+                    <span>Within 24 hours</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="contact-form-card">
+        <h2>Send us a Message</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label class="form-label">Your Name</label>
+                <input type="text" name="name" class="form-input" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-input" placeholder="john@example.com" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Message</label>
+                <textarea name="message" class="form-textarea" placeholder="Tell us what's on your mind..." required></textarea>
+            </div>
+            <button type="submit" class="btn">Send Message</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

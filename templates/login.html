@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - My Awesome Blog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        form { max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
+        label { display: block; margin-bottom: 10px; }
+        input { width: 100%; padding: 8px; margin-bottom: 15px; }
+        button { background: #007bff; color: white; padding: 10px; border: none; cursor: pointer; width: 100%; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Login</h1>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('admin') }}">Admin</a>
+        </nav>
+    </header>
+    <main>
+        <form method="POST">
+            <label>Username: <input type="text" name="username" required></label>
+            <label>Password: <input type="password" name="password" required></label>
+            <button type="submit">Login</button>
+        </form>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </main>
+    <footer>
+        <p>&copy; 2026 My Awesome Blog</p>
+    </footer>
+</body>
+</html>

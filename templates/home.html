@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">{{ config.BLOG_TITLE }}</h1>
+            <p class="hero-subtitle">{{ config.BLOG_DESCRIPTION }}</p>
+            <a href="/ai" target="_blank" class="btn-cta">Try AI ✨</a>
+        </div>
+    </div>
+    
+    <!-- Categories -->
+    <div class="categories">
+        <a href="{{ url_for('home') }}" class="cat-tag active">All</a>
+        {% for category in categories %}
+        <a href="{{ url_for('category', slug=category.slug) }}" class="cat-tag">{{ category.name }}</a>
+        {% endfor %}
+    </div>
+    
+    <!-- Latest Posts Grid -->
+    <div class="posts-area">
+        <h2 class="section-header">Latest Articles</h2>
+        
+        {% if recent_posts %}
+        <div class="grid">
+            {% for post in recent_posts %}
+            <a href="{{ url_for('post', slug=post.slug) }}" class="card">
+                <div class="card-img">
+                    {% if post.image_url %}
+                    <img src="{{ post.image_url }}" alt="{{ post.title }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600" alt="{{ post.title }}">
+                    {% endif %}
+                    <span class="card-badge">{{ post.category.name if post.category else 'Blog' }}</span>
+                </div>
+                <div class="card-text">
+                    <h3 class="card-heading">{{ post.title }}</h3>
+                    <p class="card-desc">{{ post.content[:80] }}...</p>
+                    <div class="card-info">
+                        <span><i class="far fa-calendar"></i> {{ post.created_at.strftime('%b %d') }}</span>
+                        <span><i class="far fa-clock"></i> 5 min</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="no-posts">
+            <h3>No posts yet</h3>
+            <p>Coming soon!</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

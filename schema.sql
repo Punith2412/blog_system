@@ -1,0 +1,12 @@
+DROP TABLE IF EXISTS posts;
+
+CREATE TABLE posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    
+    title TEXT NOT NULL,
+    slug TEXT UNIQUE NOT NULL,
+    content TEXT NOT NULL,
+    category TEXT NOT NULL,
+    image TEXT,
+    date_posted DATETIME DEFAULT CURRENT_TIMESTAMP
+);

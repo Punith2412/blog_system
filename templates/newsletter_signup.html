@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<nav class="navbar">
+    <a href="{{ url_for('home') }}" class="navbar-brand">MyBlog.</a>
+    <div class="nav-links">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="{{ url_for('login') }}">Login</a>
+    </div>
+</nav>
+
+<div class="page-container" style="text-align: center;">
+    <div style="max-width: 500px; margin: 0 auto;">
+        <div style="font-size: 4rem; margin-bottom: 1rem;">✅</div>
+        <h1 class="page-title">You're Subscribed!</h1>
+        <div class="page-content">
+            <p>Thank you for subscribing to our newsletter.</p>
+            <p>We've sent a confirmation email to: <strong>{{ email }}</strong></p>
+            <p style="margin-top: 2rem;">
+                <a href="{{ url_for('home') }}" class="btn btn-dark">Back to Home</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <p>&copy; 2024 MyBlog. All rights reserved.</p>
+</footer>
+{% endblock %}

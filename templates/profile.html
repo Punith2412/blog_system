@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<nav class="navbar">
+    <a href="{{ url_for('home') }}" class="navbar-brand">MyBlog.</a>
+    <div class="nav-links">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        {% if current_user.is_authenticated %}
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+        {% endif %}
+    </div>
+</nav>
+
+<div class="page-container">
+    <div style="text-align: center; margin-bottom: 3rem;">
+        <div style="width: 120px; height: 120px; background: #1a1a1a; border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: 700;">
+            {{ user.username[0].upper() }}
+        </div>
+        <h1 class="page-title">{{ user.username }}</h1>
+        {% if user.bio %}
+        <p class="page-content" style="max-width: 600px; margin: 0 auto;">{{ user.bio }}</p>
+        {% endif %}
+    </div>
+    
+    <h2 style="margin-bottom: 1.5rem; font-weight: 700;">Posts by {{ user.username }}</h2>
+    
+    <div class="bento-grid">
+        {% for post in posts %}
+        <div class="bento-card">
+            <div class="card-content">
+                <h2 class="card-title">
+                    <a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a>
+                </h2>
+                {% if post.subtitle %}
+                <p class="card-subtitle">{{ post.subtitle }}</p>
+                {% endif %}
+                <p class="card-text">{{ post.content[:150] }}...</p>
+                <div class="meta">
+                    {{ post.date_posted.strftime('%B %d, %Y') }}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="bento-card" style="grid-column: span 3;">
+            <div class="card-content" style="text-align: center; padding: 3rem;">
+                <p style="color: #888;">No posts yet.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<footer class="footer">
+    <p>&copy; 2024 MyBlog. All rights reserved.</p>
+</footer>
+{% endblock %}

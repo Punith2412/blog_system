@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - My Awesome Blog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .stats { display: flex; justify-content: space-around; margin: 20px 0; }
+        .stat { text-align: center; }
+        .posts table { width: 100%; border-collapse: collapse; }
+        .posts th, .posts td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .posts th { background-color: #f2f2f2; }
+        .btn { padding: 5px 10px; text-decoration: none; color: white; border-radius: 4px; }
+        .edit { background: #007bff; }
+        .delete { background: #dc3545; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Admin Panel</h1>
+        <nav>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('admin') }}">Admin</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="stats">
+            <div class="stat">
+                <h3>{{ stats.posts }}</h3>
+                <p>Total Posts</p>
+            </div>
+            <div class="stat">
+                <h3>{{ stats.comments }}</h3>
+                <p>Total Comments</p>
+            </div>
+            <div class="stat">
+                <h3>{{ stats.categories }}</h3>
+                <p>Total Categories</p>
+            </div>
+        </section>
+
+        <section class="posts">
+            <h2>Posts</h2>
+            <a href="{{ url_for('add_post') }}" class="btn" style="background: #28a745;">Add New Post</a>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts %}
+                    <tr>
+                        <td>{{ post['title'] }}</td>
+                        <td>{{ post['category'] }}</td>
+                        <td>{{ post['status'] }}</td>
+                        <td>
+                            <a href="{{ url_for('edit_post', id=post['id']) }}" class="btn edit">Edit</a>
+                            <a href="{{ url_for('delete_post', id=post['id']) }}" class="btn delete" onclick="return confirm('Are you sure?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 My Awesome Blog</p>
+    </footer>
+</body>
+</html>

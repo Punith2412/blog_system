@@ -139,38 +139,6 @@
         </div>
     </footer>
     
-    <!-- Newsletter Popup -->
-    <div id="newsletterPopup" class="popup" style="display: none;">
-        <div class="popup-content">
-            <span class="popup-close" onclick="closePopup()">&times;</span>
-            <h2>📧 Subscribe to Newsletter</h2>
-            <p>Get the latest posts delivered to your inbox!</p>
-            <form action="{{ url_for('newsletter_subscribe') }}" method="POST">
-                <input type="email" name="email" placeholder="Your email address" required>
-                <button type="submit">Subscribe</button>
-            </form>
-            <p class="popup-note">No spam, unsubscribe anytime.</p>
-        </div>
-    </div>
-
-    <!-- JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    
-    <!-- Dark Mode & Popup Scripts -->
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(function() {
-        if (!localStorage.getItem('newsletterSubscribed')) {
-            document.getElementById('newsletterPopup').style.display = 'flex';
-        }
-    }, 5000);
-});
-    
-    function closePopup() {
-        document.getElementById('newsletterPopup').style.display = 'none';
-    }
-    </script>
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-GS8K1KVEJ9"></script>
     <script>

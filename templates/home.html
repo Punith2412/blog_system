@@ -9,19 +9,6 @@
         <a href="/ai" target="_blank" class="btn-ai">Try AI ✨</a>
     </section>
     
-    <!-- Layout Selector -->
-    <div class="layout-selector">
-        <a href="/?layout=bento" class="layout-btn {% if request.args.get('layout') == 'bento' or not request.args.get('layout') %}active{% endif %}" title="Bento Grid">
-            <i class="fas fa-th"></i>
-        </a>
-        <a href="/?layout=magazine" class="layout-btn {% if request.args.get('layout') == 'magazine' %}active{% endif %}" title="Magazine">
-            <i class="fas fa-newspaper"></i>
-        </a>
-        <a href="/?layout=minimal" class="layout-btn {% if request.args.get('layout') == 'minimal' %}active{% endif %}" title="Minimal">
-            <i class="fas fa-align-left"></i>
-        </a>
-    </div>
-    
     <!-- Categories -->
     <div class="categories">
         <a href="{{ url_for('home') }}" class="cat-tag active">All</a>
@@ -30,13 +17,34 @@
         {% endfor %}
     </div>
     
-    <!-- Posts Section -->
+    <!-- BENTO GRID LAYOUT -->
     <div class="posts-area">
         <h2 class="section-header">Latest Articles</h2>
         
         {% if posts %}
-            {% set layout = request.args.get('layout', 'bento') %}
-            {% include 'layouts.html' %}
+        <div class="bento-grid">
+            {% for post in posts %}
+            <a href="{{ url_for('post', slug=post.slug) }}" 
+               class="bento-card {% if loop.first %}featured{% elif loop.index in [2,3] %}medium{% endif %}">
+                <div class="bento-img">
+                    {% if post.featured_image or post.image_url %}
+                    <img src="{{ post.featured_image or post.image_url }}" alt="{{ post.title }}">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=600" alt="{{ post.title }}">
+                    {% endif %}
+                </div>
+                <div class="bento-content">
+                    <span class="bento-badge">{{ post.category_name or 'Blog' }}</span>
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.excerpt or post.content[:150] }}...</p>
+                    <div class="bento-meta">
+                        <span><i class="far fa-calendar"></i> {{ post.created_at or 'Recently' }}</span>
+                        <span><i class="far fa-eye"></i> {{ post.views or 0 }}</span>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
         {% else %}
         <div class="no-posts">
             <h3>No posts yet</h3>
@@ -47,36 +55,136 @@
 </div>
 
 <style>
-.layout-selector {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
-    justify-content: center;
+/* BENTO GRID - Best 2025 Design */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 300px);
+    gap: 20px;
+    margin-bottom: 50px;
 }
 
-.layout-btn {
-    width: 45px;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    color: var(--gray);
-    font-size: 1.1rem;
-    transition: all 0.2s;
-}
-
-.layout-btn:hover {
-    border-color: var(--primary);
-    color: var(--primary);
-}
-
-.layout-btn.active {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    border-color: transparent;
+.bento-card {
+    position: relative;
+    border-radius: 24px;
+    overflow: hidden;
+    text-decoration: none;
     color: white;
+    background: #1e293b;
+}
+
+.bento-card.featured {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.bento-card.medium {
+    grid-column: span 2;
+}
+
+.bento-card.small {
+    grid-column: span 1;
+}
+
+.bento-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.bento-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.bento-card:hover .bento-img img {
+    transform: scale(1.08);
+}
+
+.bento-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 25px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+}
+
+.bento-badge {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    width: fit-content;
+    margin-bottom: 12px;
+}
+
+.bento-card h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.bento-card p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    margin-bottom: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.bento-meta {
+    display: flex;
+    gap: 15px;
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.bento-meta i {
+    margin-right: 5px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .bento-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+    }
+    .bento-card.featured, .bento-card.medium {
+        grid-column: span 2;
+        height: 350px;
+    }
+    .bento-card.small {
+        height: 280px;
+    }
+}
+
+@media (max-width: 600px) {
+    .bento-grid {
+        grid-template-columns: 1fr;
+    }
+    .bento-card.featured, .bento-card.medium, .bento-card.small {
+        grid-column: span 1;
+        height: 300px;
+    }
 }
 </style>
 {% endblock %}

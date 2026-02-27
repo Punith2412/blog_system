@@ -7,3 +7,5 @@ google-generativeai==0.8.3
 markdown==3.5.1
 openai==1.31.0
 requests==2.31.0
+requests==2.32.3
+bleach==6.1.0

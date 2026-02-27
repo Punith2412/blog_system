@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{{ config.BLOG_TITLE }}{% endblock %}</title>
-    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✦</text></svg>">
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="{% block og_title %}{{ config.BLOG_TITLE }}{% endblock %}">
     <meta property="og:description" content="{% block og_description %}{{ config.BLOG_DESCRIPTION }}{% endblock %}">
@@ -171,7 +171,14 @@
         document.getElementById('newsletterPopup').style.display = 'none';
     }
     </script>
-    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GS8K1KVEJ9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-GS8K1KVEJ9');
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

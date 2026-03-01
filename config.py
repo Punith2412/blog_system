@@ -1,5 +1,5 @@
 import os
-
+DATABASE = "blogdata.db"
 class Config:
     """Application configuration."""
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'

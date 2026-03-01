@@ -1,6 +1,6 @@
 import sqlite3
 
-conn = sqlite3.connect('blog.db')
+conn = sqlite3.connect("blogdata.db")
 cursor = conn.cursor()
 
 # Create posts table

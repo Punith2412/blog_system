@@ -333,5 +333,5 @@ def page_not_found(e):
 def simple():
     return render_template('simple_test.html')
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)

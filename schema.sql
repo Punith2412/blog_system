@@ -1,12 +1,38 @@
-DROP TABLE IF EXISTS posts;
-
-CREATE TABLE posts (
+CREATE TABLE IF NOT EXISTS posts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    
     title TEXT NOT NULL,
-    slug TEXT UNIQUE NOT NULL,
-    content TEXT NOT NULL,
-    category TEXT NOT NULL,
+    content TEXT,
+    category TEXT,
+    tags TEXT,
     image TEXT,
-    date_posted DATETIME DEFAULT CURRENT_TIMESTAMP
+    slug TEXT UNIQUE,
+    status TEXT DEFAULT 'published',
+    type TEXT DEFAULT 'article',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    author_id INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER NOT NULL,
+    author TEXT NOT NULL,
+    content TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES posts (id)
+);
+
+CREATE TABLE IF NOT EXISTS subscribers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS analytics (
+    post_id INTEGER PRIMARY KEY,
+    views INTEGER DEFAULT 0
 );

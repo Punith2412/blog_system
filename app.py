@@ -5,6 +5,10 @@ import bleach
 from datetime import datetime
 import os
 import sqlite3
+from models import init_db
+import init_db
+init_db()
+
 
 from models import (
     get_all_posts, get_post_by_id, get_post_by_slug, get_posts_by_category,

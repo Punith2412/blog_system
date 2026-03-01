@@ -1,44 +1,83 @@
 import sqlite3
 
-conn = sqlite3.connect("blogdata.db")
+DATABASE = "blogdata.db"
+
+conn = sqlite3.connect(DATABASE)
 cursor = conn.cursor()
 
-# Create posts table
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS posts (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT NOT NULL,
-        slug TEXT UNIQUE NOT NULL,
-        content TEXT NOT NULL,
-        category_id INTEGER,
-        author_id INTEGER,
-        status TEXT DEFAULT 'draft',
-        image_url TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-''')
+# USERS
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE,
+    password TEXT,
+    role TEXT DEFAULT 'admin',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+""")
 
-# Create categories table
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS categories (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        slug TEXT UNIQUE NOT NULL
-    )
-''')
+# CATEGORIES
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS categories (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE,
+    slug TEXT,
+    description TEXT,
+    color TEXT
+)
+""")
 
-# Create users table
-cursor.execute('''
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE NOT NULL,
-        email TEXT UNIQUE NOT NULL,
-        password_hash TEXT NOT NULL,
-        is_admin INTEGER DEFAULT 0
-    )
-''')
+# POSTS  (UPDATED STRUCTURE)
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS posts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT,
+    slug TEXT UNIQUE,
+    content TEXT,
+    excerpt TEXT,
+    featured_image TEXT,
+    category_id INTEGER,
+    author_id INTEGER,
+    status TEXT DEFAULT 'published',
+    views INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+""")
+
+# COMMENTS
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS comments (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER,
+    content TEXT,
+    author_name TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+""")
+
+# SUBSCRIBERS
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS subscribers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE,
+    status TEXT DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+""")
+
+# VISITS / ANALYTICS
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS visits (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER,
+    ip TEXT,
+    user_agent TEXT,
+    referrer TEXT,
+    visited_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+""")
 
 conn.commit()
 conn.close()
-print("Database created successfully!")
+
+print("✅ Database recreated successfully!")
